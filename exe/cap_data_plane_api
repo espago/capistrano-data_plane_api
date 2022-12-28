@@ -26,9 +26,10 @@ class ::CapistranoDataPlaneApiCommand < ::Thor
     copy_file 'templates/config/data_plane_api.yml', 'config/data_plane_api.yml'
     copy_file 'templates/config/data_plane_api.rb', 'config/data_plane_api.rb'
 
-    inject_into_file 'Capfile',
-                     %(require "capistrano/data_plane_api/hooks"\n),
-                     after: %r{require ("|')capistrano/deploy("|')\n}
+    inject_into_file 'Capfile', <<~RUBY, after: %r{require ("|')capistrano/deploy("|')\n}
+      require_relative "config/data_plane_api" # load your `capistrano-data_plane_api` config file
+      require "capistrano/data_plane_api/hooks"
+    RUBY
 
   end
 end

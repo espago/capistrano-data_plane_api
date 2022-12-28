@@ -6,11 +6,15 @@ Capistrano plugin which helps you automatically change the admin state of your H
 
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add capistrano-data_plane_api
+```sh
+$ bundle add capistrano-data_plane_api
+```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Afterwards, to set up your app you can use the installer:
 
-    $ gem install capistrano-data_plane_api
+```sh
+$ cap_data_plane_api install
+```
 
 ## Usage
 

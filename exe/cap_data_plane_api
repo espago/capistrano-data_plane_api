@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'thor'
+
+class ::CapistranoDataPlaneApiCommand < ::Thor
+  include ::Thor::Actions
+
+  class << self
+    # Define the generator's root folder
+    #
+    # @return [String]
+    def source_root
+      ::File.expand_path('..', __dir__)
+    end
+  end
+
+  desc 'install', 'Install the `capistrano-data_plane_api` gem in your application'
+
+  # @return [void]
+  def install
+    copy_file 'templates/bin/deploy', 'bin/deploy'
+    copy_file 'templates/bin/deploy.rb', 'bin/deploy.rb'
+
+    copy_file 'templates/config/data_plane_api.yml', 'config/data_plane_api.yml'
+    copy_file 'templates/config/data_plane_api.rb', 'config/data_plane_api.rb'
+
+    inject_into_file 'Capfile',
+                     %(require "capistrano/data_plane_api/hooks"\n),
+                     after: %r{require ("|')capistrano/deploy("|')\n}
+
+  end
+end
+
+::CapistranoDataPlaneApiCommand.start

@@ -5,6 +5,7 @@ PATH
       data_plane_api (~> 0.1)
       pastel (< 1)
       shale (< 1)
+      thor (> 1, < 2)
       tty-box (< 1)
       tty-cursor (< 1)
 

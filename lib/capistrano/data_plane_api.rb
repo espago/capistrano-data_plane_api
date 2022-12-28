@@ -4,6 +4,7 @@ require 'data_plane_api'
 require 'pastel'
 require 'pathname'
 require 'json'
+require 'logger'
 
 require_relative 'data_plane_api/version'
 require_relative 'data_plane_api/helper'
@@ -291,4 +292,4 @@ module Capistrano
   end
 end
 
-require_relative 'data_plane_api/tasks'
+require_relative 'data_plane_api/tasks' if defined?(::Rake)

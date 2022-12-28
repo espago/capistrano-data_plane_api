@@ -33,6 +33,7 @@ require_relative 'lib/capistrano/data_plane_api/version'
   spec.add_dependency 'data_plane_api', '~> 0.1'
   spec.add_dependency 'pastel', '< 1'
   spec.add_dependency 'shale', '< 1'
+  spec.add_dependency 'thor', '> 1', '< 2'
   spec.add_dependency 'tty-box', '< 1'
   spec.add_dependency 'tty-cursor', '< 1'
 

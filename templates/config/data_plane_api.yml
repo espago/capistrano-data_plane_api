@@ -1,0 +1,51 @@
+# We recommend to keep your credentials outside of Git.
+# You can achieve that by reading ENV variables using ERB in this file,
+# or add this file to .gitignore and provide an example file with fake data
+# called `config/data_plane_api.yml.example` which will serve as
+# an example of how it should be configured.
+
+# Root URL of the HAProxy Data Plane API
+api_url: http://example.com/haproxy-data-plane-api
+logger_level: <%= Logger::DEBUG %>
+# Default Data Plane API BasicAuth credentials
+basic_user: my_user # Data Plane API BasicAuth username
+basic_password: my_password # Data Plane API BasicAuth password
+
+# List of HAProxy backends
+backends:
+  - name: back_production # your HAProxy backend name
+    # styles defined in the `Pastel` gem, used in the terminal to uniquely identify this backend
+    # by coloring its name.
+    # Read more: https://github.com/piotrmurach/pastel#3-supported-colors
+    styles:
+      - :bold
+      - :on_red
+    # List of servers under this backend
+    servers:
+      - name: production1 # HAProxy server name and Capistrano stage name (config/deploy/production1.rb)
+      - name: production2
+      # when the HAProxy server name is different from the Capistrano stage name.
+      - name: production3_haproxy_server # HAProxy server name
+        stage: production3_capistrano_stage # Capistrano stage name (config/deploy/production3_capistrano_stage.rb)
+
+  - name: back_staging
+    styles:
+      - :bold
+      - :on_blue
+    # This backend has its own credentials
+    basic_user: some_other_user # Data Plane API BasicAuth user for this password
+    basic_password: some_other_password # Data Plane API BasicAuth password for this backend
+    servers:
+      - name: staging1
+      - name: staging2
+
+  - name: back_edge
+    styles:
+      - :bold
+      - :on_green
+    # You can use ERB to read data from Environment Variables.
+    basic_user: <%= ENV['USER'] %>
+    basic_password: <%= ENV['PASS'] %>
+    servers:
+      - name: edge1
+        stage: edge2

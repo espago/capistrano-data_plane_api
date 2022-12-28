@@ -1,0 +1,114 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://example.com/v2/services/haproxy/runtime/servers/foo_production_1?backend=foo_production
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v1.10.0
+      Authorization:
+      - Basic c2FuZGJveDpzYW5kYm94
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Vary:
+      - Origin
+      Date:
+      - Mon, 18 Jul 2022 15:49:01 GMT
+      Content-Length:
+      - '107'
+    body:
+      encoding: UTF-8
+      string: '{"address":"132.0.4.2","admin_state":"ready","id":"1","name":"foo_production_1","operational_state":"up","port":4512}
+
+        '
+    http_version:
+  recorded_at: Mon, 18 Jul 2022 15:49:12 GMT
+- request:
+    method: get
+    uri: http://example.com/v2/services/haproxy/runtime/servers?backend=foo_production
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v1.10.0
+      Authorization:
+      - Basic c2FuZGJveDpzYW5kYm94
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Vary:
+      - Origin
+      Date:
+      - Mon, 18 Jul 2022 15:49:01 GMT
+      Content-Length:
+      - '216'
+    body:
+      encoding: UTF-8
+      string: '[{"address":"132.0.4.2","admin_state":"ready","id":"1","name":"foo_production_1","operational_state":"up","port":4512},{"address":"132.0.4.3","admin_state":"drain","id":"2","name":"foo_production_2","operational_state":"up","port":4512}]
+
+        '
+    http_version:
+  recorded_at: Mon, 18 Jul 2022 15:49:12 GMT
+- request:
+    method: get
+    uri: http://example.com/v2/services/haproxy/runtime/servers/foo_production_1?backend=foo_production
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v1.10.0
+      Authorization:
+      - Basic c2FuZGJveDpzYW5kYm94
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Vary:
+      - Origin
+      Date:
+      - Mon, 18 Jul 2022 15:49:01 GMT
+      Content-Length:
+      - '107'
+    body:
+      encoding: UTF-8
+      string: '{"address":"132.0.4.2","admin_state":"ready","id":"1","name":"foo_production_1","operational_state":"up","port":4512}
+
+        '
+    http_version:
+  recorded_at: Mon, 18 Jul 2022 15:49:12 GMT
+recorded_with: VCR 4.0.0

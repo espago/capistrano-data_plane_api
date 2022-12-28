@@ -7,7 +7,6 @@ require 'minitest/autorun'
 require 'shoulda-context'
 
 require 'vcr'
-require 'debug'
 
 ::RELATIVE_CASSETTE_DIR = 'test/cassettes'
 

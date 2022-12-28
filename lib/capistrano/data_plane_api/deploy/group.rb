@@ -28,16 +28,16 @@ module Capistrano
 
           success = nil
           @servers.each do |server|
-            server_stats = @deployment_stats[server['name']]
-            title "Deploying the app to `#{server['stage']}` -- `#{@backend.name}:#{server['name']}`"
+            server_stats = @deployment_stats[server.name]
+            puts COLORS.bold.blue("Deploying the app to `#{server.stage}` -- `#{@backend.name}:#{server.name}`")
 
-            puts @args.humanized_deploy_command(server['stage'])
+            puts @args.humanized_deploy_command(server.stage)
             puts
 
             next if @args.test?
 
             server_stats.start_time = ::Time.now
-            deploy_command = @args.deploy_command(server['stage'])
+            deploy_command = @args.deploy_command(server.stage)
             success = system deploy_command
 
             server_stats.end_time = ::Time.now
@@ -45,7 +45,7 @@ module Capistrano
 
             next if success
 
-            error "Command `#{deploy_command}` failed"
+            puts COLORS.bold.red("Command `#{deploy_command}` failed")
             break
           end
 
@@ -79,14 +79,14 @@ module Capistrano
         end
 
         # @param backend [Capistrano::DataPlaneApi::Configuration::Backend]
-        # @return [Array<Hash{String => Object}>]
+        # @return [Array<Capistrano::DataPlaneApi::Configuration::Server>]
         def servers(backend)
           return backend.servers unless @args.only?
 
           chosen_servers = []
           @args.only.each do |current_server_name|
             backend.servers.each do |server|
-              next unless server['name'] == current_server_name || server['stage'] == current_server_name
+              next unless server.name == current_server_name || server.stage == current_server_name
 
               chosen_servers << server
             end

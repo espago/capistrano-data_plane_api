@@ -43,13 +43,13 @@ module Capistrano
           @server_stats[key] = val
         end
 
-        # @param servers [Array<Hash{String => Object}>, Hash{String => Object}]
+        # @param servers [Array<Capistrano::DataPlaneApi::Configuration::Server>, Capistrano::DataPlaneApi::Configuration::Server]
         # @return [void]
         def create_stats_for(servers)
           servers = *servers
 
           servers.each do |server|
-            @server_stats[server['name']] = ServerStats.new(server['name'], @backend.name)
+            @server_stats[server.name] = ServerStats.new(server.name, @backend.name)
           end
         end
 

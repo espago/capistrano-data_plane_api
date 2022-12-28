@@ -12,6 +12,18 @@ module Capistrano
       include Equatable
 
       alias to_h to_hash
+
+      # @param key [Symbol, String]
+      # @return [Object, nil]
+      def [](key)
+        public_send(key) if respond_to?(key)
+      end
+
+      # @param key [Symbol, String]
+      # @param val [Object]
+      def []=(key, val)
+        public_send(:"#{key}=", val)
+      end
     end
   end
 end

@@ -46,10 +46,10 @@ module Capistrano
         COLORS.decorate(" #{state.upcase} ", :bold, OPERATIONAL_STATE_COLORS[state.downcase])
       end
 
-      # @param backend [Hash{String => Object}]
+      # @param backend [Capistrano::DataPlaneApi::Configuration::Backend]
       # @return [String]
       def humanize_backend_name(backend)
-        COLORS.decorate(" #{backend['name']} ", *backend['styles'])
+        COLORS.decorate(" #{backend.name} ", *backend.styles)
       end
     end
   end

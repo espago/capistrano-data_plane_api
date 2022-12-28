@@ -52,8 +52,8 @@ module Capistrano
         when Configuration
           @configuration = val
         when ::String, ::Pathname
-          @configuration = Configuration.from_file(path)
-          @configuration.file_path = path
+          @configuration = Configuration.from_file(val.to_s)
+          @configuration.file_path = val
         else
           raise ::ArgumentError,
                 "Configuration should be a `#{::Hash}`, `#{Configuration}`, #{::String} or #{::Pathname}" \

@@ -13,7 +13,7 @@ $ bundle add capistrano-data_plane_api
 Afterwards, to set up your app you can use the installer:
 
 ```sh
-$ cap_data_plane_api install
+$ bundle exec cap_data_plane_api install
 ```
 
 ## Usage

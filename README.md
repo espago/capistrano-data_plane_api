@@ -1,6 +1,7 @@
 # Capistrano::DataPlaneApi
 
-Capistrano plugin which helps you automatically change the admin state of your HAProxy servers.
+Capistrano plugin which helps you automatically change the admin state of your HAProxy
+servers using the [Data Plane API](https://www.haproxy.com/documentation/dataplaneapi/community/).
 
 ## Installation
 
@@ -32,7 +33,8 @@ $ bundle exec cap_data_plane_api install
 
 This gem hooks into capistrano to add new tasks which
 enable you to change the admin state of your HAProxy
-servers during the deployment process.
+servers during the deployment process
+using using the [Data Plane API](https://www.haproxy.com/documentation/dataplaneapi/community/).
 
 We recommend creating separate Capistrano stages
 for every HAProxy server.

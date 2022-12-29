@@ -13,6 +13,7 @@ basic_password: my_password # Data Plane API BasicAuth password
 
 # List of HAProxy backends
 backends:
+
   - name: back_production # your HAProxy backend name
     # styles defined in the `Pastel` gem, used in the terminal to uniquely identify this backend
     # by coloring its name.

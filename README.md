@@ -1,7 +1,11 @@
 # Capistrano::DataPlaneApi
 
-Capistrano plugin which helps you automatically change the admin state of your HAProxy
+[Capistrano](https://capistranorb.com/) plugin which helps you
+automatically change the admin state of your [HAProxy](https://www.haproxy.com/)
 servers using the [Data Plane API](https://www.haproxy.com/documentation/dataplaneapi/community/).
+
+[Capistrano](https://capistranorb.com/) is a remote server automation and deployment tool.
+[HAProxy](https://www.haproxy.com/) is a load balancer.
 
 ## Installation
 

@@ -10,6 +10,7 @@ require_relative 'data_plane_api/version'
 require_relative 'data_plane_api/helper'
 require_relative 'data_plane_api/terminal_print_loop'
 require_relative 'data_plane_api/configuration'
+require_relative 'data_plane_api/show_state'
 
 module Capistrano
   # Main module/namespace of the `capistrano-data_plane_api` gem.

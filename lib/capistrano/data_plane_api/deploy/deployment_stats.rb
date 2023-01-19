@@ -100,10 +100,10 @@ module Capistrano
             nil
           end
 
-          return unless server_states
+          return if server_states.nil?
 
           server_states.each do |server_state|
-            @server_stats[server_state['name']]&.then do |s|
+            @server_stats[server_state['name']]&.tap do |s|
               s.admin_state = server_state['admin_state']
               s.operational_state = server_state['operational_state']
             end

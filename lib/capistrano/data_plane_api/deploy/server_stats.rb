@@ -34,6 +34,8 @@ module Capistrano
           @backend_name = backend_name
           @success = nil
           @seconds = nil
+          @admin_state = 'unknown'
+          @operational_state = 'unknown'
         end
 
         # @return [String]

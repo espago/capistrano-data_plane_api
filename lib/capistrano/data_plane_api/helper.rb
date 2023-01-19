@@ -6,6 +6,7 @@ module Capistrano
     module Helper
       # @return [Hash{String => Symbol}]
       ADMIN_STATE_COLORS = {
+        'unknown' => :on_red,
         'drain' => :on_blue,
         'ready' => :on_green,
         'maint' => :on_yellow
@@ -13,6 +14,7 @@ module Capistrano
 
       # @return [Hash{String => Symbol}]
       OPERATIONAL_STATE_COLORS = {
+        'unknown' => :on_red,
         'up' => :on_green,
         'down' => :on_red,
         'stopping' => :on_yellow

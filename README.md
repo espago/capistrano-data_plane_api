@@ -155,6 +155,8 @@ add this line to your `Capfile`
 require 'capistrano/data_plane_api'
 ```
 
+These tasks will only run when the `:web` role is added to the deployment stage.
+
 ## Hooks
 
 If you used the installer, your app is already
@@ -187,6 +189,8 @@ deploy
     [after]
         data_plane_api:server:set_ready
 ```
+
+These tasks will only run when the `:web` role is added to the deployment stage.
 
 ## Development
 

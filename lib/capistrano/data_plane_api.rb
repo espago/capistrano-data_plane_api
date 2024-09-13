@@ -266,11 +266,6 @@ module Capistrano
       # @return [void]
       def validate_backend_state(haproxy_backend, haproxy_server)
         response = get_backend_servers_settings(haproxy_backend.name)
-        unless haproxy_backend.servers.length == response.body.length
-          raise QueryError,
-                'HAProxy query failed! Configured servers for this backend' \
-                "don't match the configuration file! `#{configuration.file_path}`"
-        end
 
         # @type [Array<Hash>]
         server_statuses = response.body

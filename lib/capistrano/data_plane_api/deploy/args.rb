@@ -50,6 +50,7 @@ module Capistrano
               'HaProxy backends and servers'
             ) do |val|
               args.check = val
+              args.rake = 'deploy:check' if val
             end
 
             parser.on(

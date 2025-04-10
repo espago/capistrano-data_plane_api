@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 module Capistrano
@@ -5,30 +6,31 @@ module Capistrano
     module Deploy
       # Represents the stats of a deployment to a particular server
       class ServerStats
-        # @return [Boolean, nil] `nil` when the deployment hasn't begun
-        #   `true` when it has finished successfully, `false` when it has failed
+        # `nil` when the deployment hasn't begun
+        #  `true` when it has finished successfully, `false` when it has failed
+        #
+        #: bool?
         attr_accessor :success
 
-        # @return [Time, nil]
+        #: Time?
         attr_accessor :start_time
 
-        # @return [Time, nil]
+        #: Time?
         attr_accessor :end_time
 
-        # @return [String]
+        #: String
         attr_accessor :server_name
 
-        # @return [String]
+        #: String
         attr_accessor :backend_name
 
-        # @return [String, nil]
+        #: String?
         attr_accessor :admin_state
 
-        # @return [String, nil]
+        #: String?
         attr_accessor :operational_state
 
-        # @param server_name [String]
-        # @param backend_name [String]
+        #: (String, String) -> void
         def initialize(server_name, backend_name)
           @server_name = server_name
           @backend_name = backend_name
@@ -38,36 +40,38 @@ module Capistrano
           @operational_state = 'unknown'
         end
 
-        # @return [String]
+        #: -> String
         def to_s
           time_string =
             case @success
             when nil    then 'skipped'
-            when false  then "failed after #{Helper.humanize_time(seconds)}"
-            when true   then "took #{Helper.humanize_time(seconds)}"
+            when false  then "failed after #{Helper.humanize_time(T.must(seconds))}"
+            when true   then "took #{Helper.humanize_time(T.must(seconds))}"
             end
 
           "  #{state_emoji} #{server_title} #{time_string}#{haproxy_states}"
         end
 
-        # @return [Integer, nil] How much time has the deployment taken
+        # How much time has the deployment taken
+        #
+        #: -> Integer?
         def seconds
-          @seconds ||= Helper.seconds_since(@start_time, to: @end_time)
+          @seconds ||= Helper.seconds_since(T.must(@start_time), to: T.must(@end_time))
         end
 
         private
 
-        # @return [String, nil]
+        #: -> String?
         def humanize_admin_state
           ::Capistrano::DataPlaneApi.humanize_admin_state(@admin_state)
         end
 
-        # @return [String, nil]
+        #: -> String?
         def humanize_operational_state
           ::Capistrano::DataPlaneApi.humanize_operational_state(@operational_state)
         end
 
-        # @return [String, nil]
+        #: -> String?
         def haproxy_states
           <<-HAPROXY
 
@@ -76,35 +80,39 @@ module Capistrano
           HAPROXY
         end
 
-        # @return [Hash{String => Symbol}]
-        SERVER_TITLE_COLORS = {
-          nil => :yellow,
-          false => :red,
-          true => :green
-        }.freeze
+        SERVER_TITLE_COLORS = T.let(
+          {
+            nil   => :yellow,
+            false => :red,
+            true  => :green,
+          }.freeze,
+          T::Hash[T.nilable(T::Boolean), Symbol],
+        )
         private_constant :SERVER_TITLE_COLORS
 
-        # @return [String]
+        #: -> String
         def server_title
-          COLORS.decorate(server_id, :bold, SERVER_TITLE_COLORS[@success])
+          COLORS.decorate(server_id, :bold, SERVER_TITLE_COLORS.fetch(@success))
         end
 
-        # @return [String]
+        #: -> String
         def server_id
           "#{@backend_name}:#{@server_name}"
         end
 
-        # @return [Hash{Boolean, nil => Symbol}]
-        STATE_EMOJIS = {
-          nil => '🟡',
-          false => '❌',
-          true => '✅'
-        }.freeze
+        STATE_EMOJIS = T.let(
+          {
+            nil   => '🟡',
+            false => '❌',
+            true  => '✅',
+          }.freeze,
+          T::Hash[T.nilable(T::Boolean), String],
+        )
         private_constant :STATE_EMOJIS
 
-        # @return [String]
+        #: -> String
         def state_emoji
-          STATE_EMOJIS[@success]
+          STATE_EMOJIS.fetch(@success)
         end
       end
     end

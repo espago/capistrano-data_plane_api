@@ -1,0 +1,6 @@
+--dir
+.
+--enable-experimental-rbs-signatures
+--ignore=tmp/
+--ignore=vendor/
+--ignore=rbi/capistrano-data_plane_api.rbi

@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require_relative '../data_plane_api'
@@ -7,7 +8,7 @@ module Capistrano
     # Contains code used in the deployment script.
     module Deploy
       class << self
-        # @return [void]
+        #: -> void
         def call
           args = Args.parse
           puts COLORS.bold.blue('Running the deployment script')

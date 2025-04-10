@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require_relative 'symbol'
@@ -6,6 +7,7 @@ require_relative 'server'
 module Capistrano
   module DataPlaneApi
     class Configuration < Type
+      # Contains the configuration options of a backend
       class Backend < Type
         attribute :name, ::Shale::Type::String
         attribute :styles, Symbol, collection: true

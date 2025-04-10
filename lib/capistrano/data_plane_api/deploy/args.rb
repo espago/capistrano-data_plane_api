@@ -1,5 +1,7 @@
+# typed: true
 # frozen_string_literal: true
 
+require 'booleans/kernel_extension'
 require 'optparse'
 
 module Capistrano
@@ -9,11 +11,9 @@ module Capistrano
       # passed to the deployment script and saves them in
       # an object.
       class Args
-        # @return [Array<String>]
         PRINTABLE_ENV_VARS = %w[BRANCH NO_MIGRATIONS].freeze
 
-        # @param options [Array, nil]
-        # @return [self]
+        #: (Array[untyped]?) -> instance
         def self.parse(options = nil) # rubocop:disable Metrics/MethodLength, Style/ClassMethodsDefinitions
           args = new
 
@@ -28,7 +28,7 @@ module Capistrano
             parser.on(
               '-c',
               '--current',
-              'Deploy from the currently checked out branch'
+              'Deploy from the currently checked out branch',
             ) do |_val|
               args.branch = `git branch --show-current`.strip
               ::ENV['BRANCH'] = args.branch
@@ -37,7 +37,7 @@ module Capistrano
             parser.on(
               '-t',
               '--test',
-              'Show the commands that would be executed but do not carry out the deployment'
+              'Show the commands that would be executed but do not carry out the deployment',
             ) do |val|
               args.test = val
             end
@@ -47,7 +47,7 @@ module Capistrano
               '--check',
               'Test deployment dependencies. ' \
               'Checks things like directory permissions, necessary utilities, ' \
-              'HaProxy backends and servers'
+              'HaProxy backends and servers',
             ) do |val|
               args.check = val
               args.rake = 'deploy:check' if val
@@ -56,14 +56,14 @@ module Capistrano
             parser.on(
               '-g GROUP',
               '--group=GROUP',
-              'Deploy the code to every server in the passed HAProxy backend/group'
+              'Deploy the code to every server in the passed HAProxy backend/group',
             ) do |val|
               args.group = val
             end
 
             parser.on(
               '--no-haproxy',
-              'Do not modify the state of any server in HAProxy'
+              'Do not modify the state of any server in HAProxy',
             ) do |val|
               args.no_haproxy = val
               ::ENV['NO_HAPROXY'] = 'true'
@@ -71,7 +71,7 @@ module Capistrano
 
             parser.on(
               '--force-haproxy',
-              'Ignore the current state of servers in HAProxy'
+              'Ignore the current state of servers in HAProxy',
             ) do |val|
               args.force_haproxy = val
               ::ENV['FORCE_HAPROXY'] = 'true'
@@ -80,7 +80,7 @@ module Capistrano
             parser.on(
               '-o ONLY',
               '--only=ONLY',
-              'Deploy the code only to the passed servers in the same order'
+              'Deploy the code only to the passed servers in the same order',
             ) do |val|
               next unless val
 
@@ -90,7 +90,7 @@ module Capistrano
             parser.on(
               '-H',
               '--haproxy-config',
-              'Show the current HAProxy configuration'
+              'Show the current HAProxy configuration',
             ) do |val|
               next unless val
 
@@ -102,7 +102,7 @@ module Capistrano
             parser.on(
               '-S',
               '--haproxy-state',
-              'Show the current HAProxy state'
+              'Show the current HAProxy state',
             ) do |val|
               next unless val
 
@@ -114,7 +114,7 @@ module Capistrano
             parser.on(
               '-T',
               '--tasks',
-              'Print a list of all available deployment Rake tasks'
+              'Print a list of all available deployment Rake tasks',
             ) do |val|
               next unless val
 
@@ -128,7 +128,7 @@ module Capistrano
             parser.on(
               '-r RAKE',
               '--rake=RAKE',
-              'Carry out a particular Rake task on the server'
+              'Carry out a particular Rake task on the server',
             ) do |val|
               next unless val
 
@@ -143,7 +143,7 @@ module Capistrano
             parser.on(
               '-b BRANCH',
               '--branch=BRANCH',
-              'Deploy the code from the passed Git branch'
+              'Deploy the code from the passed Git branch',
             ) do |val|
               args.branch = val
               ::ENV['BRANCH'] = val
@@ -151,7 +151,7 @@ module Capistrano
 
             parser.on(
               '--no-migrations',
-              'Do not carry out migrations'
+              'Do not carry out migrations',
             ) do |val|
               args.no_migrations = val
               ::ENV['NO_MIGRATIONS'] = 'true'
@@ -164,58 +164,79 @@ module Capistrano
           args
         end
 
-        # @return [String, nil] Git branch that the code will be deployed to
+        # Git branch that the code will be deployed to
+        #
+        #: String?
         attr_accessor :branch
-        # @return [Boolean] Runs in test mode if true, only prints commands without executing them
+
+        # Runs in test mode if true, only prints commands without executing them
+        #
+        #: bool
         attr_accessor :test
-        # @return [String, nil] Name of the HAProxy server group/backend
+
+        # Name of the HAProxy server group/backend
+        #
+        #: String?
         attr_accessor :group
-        # @return [Boolean]
+
+        #: bool
         attr_accessor :no_haproxy
-        # @return [Boolean]
+
+        #: bool
         attr_accessor :no_migrations
-        # @return [Boolean]
+
+        #: bool
         attr_accessor :force_haproxy
-        # @return [Array<String>, nil] Ordered list of servers to which the app will be deployed
+
+        # Ordered list of servers to which the app will be deployed
+        #
+        #: Array[String]?
         attr_accessor :only
-        # @return [String, nil] Rake command that will be called remotely (`deploy` by default)
+
+        # Rake command that will be called remotely (`deploy` by default)
+        #
+        #: String?
         attr_accessor :rake
-        # @return [String, nil] Name of the deployment stage/server
+
+        # Name of the deployment stage/server
+        #
+        #: String?
         attr_accessor :stage
-        # @return [Boolean] Checks deployment dependencies
+
+        # Checks deployment dependencies
+        #: bool
         attr_accessor :check
 
         alias test? test
 
+        #: -> void
         def initialize
           @rake = 'deploy'
         end
 
-        # @return [Boolean]
+        #: -> bool
         def only?
           return false if @only.nil?
 
           @only.any?
         end
 
-        # @return [void]
+        #: -> void
         def prepare_if_one_server
           return unless one_server?
 
-          server, backend = ::Capistrano::DataPlaneApi.find_server_and_backend(@stage)
-          @only = [server['name']]
-          @group = backend['name']
+          server, backend = ::Capistrano::DataPlaneApi.find_server_and_backend(T.must(@stage))
+          @only = [T.must(server.name)]
+          @group = backend.name
         end
 
-        # @param stage [String, Symbol, nil]
-        # @return [String]
+        #: (String | Symbol | nil) -> String
         def deploy_command(stage = nil)
           used_stage = stage || self.stage
           "cap #{used_stage} #{rake}"
         end
 
-        # @param stage [String, Symbol, nil]
-        # @return [String]
+        #: (String | Symbol | nil) -> String
         def humanized_deploy_command(stage = nil)
           result = ::String.new
           PRINTABLE_ENV_VARS.each do |env_var_name|
@@ -228,24 +249,21 @@ module Capistrano
           result
         end
 
-        # @param key [Symbol, String]
-        # @return [Object]
+        #: (Symbol | String) -> Object
         def [](key)
           public_send(key)
         end
 
-        # @param key [Symbol, String]
-        # @param val [Object]
-        # @return [Object]
+        #: (Symbol | String, Object) -> Object
         def []=(key, val)
           public_send("#{key}=", val)
         end
 
         private
 
-        # @return [Boolean]
+        #: -> bool
         def one_server?
-          @stage && @group.nil?
+          Boolean(@stage && @group.nil?)
         end
       end
     end

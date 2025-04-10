@@ -3,13 +3,14 @@
 
 require 'thor'
 
+# Implements the installer script for `capistrano-data_plane_api`
 class ::CapistranoDataPlaneApiCommand < ::Thor
   include ::Thor::Actions
 
   class << self
     # Define the generator's root folder
     #
-    # @return [String]
+    #: -> String
     def source_root
       ::File.expand_path('..', __dir__)
     end
@@ -17,7 +18,7 @@ class ::CapistranoDataPlaneApiCommand < ::Thor
 
   desc 'install', 'Install the `capistrano-data_plane_api` gem in your application'
 
-  # @return [void]
+  #: -> void
   def install
     copy_file 'templates/bin/deploy', 'bin/deploy'
     chmod 'bin/deploy', 'a+x'

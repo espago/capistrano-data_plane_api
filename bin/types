@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+set -vx
+
+bundle exec tapioca annotations
+bundle exec tapioca gems $@
+bundle exec tapioca dsl $@

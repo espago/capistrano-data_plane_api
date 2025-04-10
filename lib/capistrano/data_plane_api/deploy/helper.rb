@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 module Capistrano
@@ -8,8 +9,7 @@ module Capistrano
       module Helper
         extend self
 
-        # @param seconds [Integer]
-        # @return [String]
+        #: (Integer) -> String
         def humanize_time(seconds)
           hours = seconds / 3600
           rest_seconds = seconds - (hours * 3600)
@@ -39,9 +39,7 @@ module Capistrano
         # Calculate how many seconds have passed
         # since the given point in time.
         #
-        # @param time [Time]
-        # @param to [Time]
-        # @return [Integer]
+        #: (Time, Time) -> Integer
         def seconds_since(time, to: ::Time.now)
           (to - time).to_i
         end

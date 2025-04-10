@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 module Capistrano
@@ -7,27 +8,27 @@ module Capistrano
       # in a particular HAProxy backend/group.
       class Group
         class << self
-          # @param args [DeployArgs]
-          # @return [void]
+          #: (Args) -> bool?
           def call(args)
             new(args).call
           end
         end
 
-        # @param args [DeployArgs]
+        #: (Args) -> void
         def initialize(args)
           @args = args
           @deployment_stats = DeploymentStats.new
         end
 
-        # @return [Boolean, nil] Whether the deployment has been successful
+        # Whether the deployment has been successful]
+        #: -> bool?
         def call
-          @backend = ::Capistrano::DataPlaneApi.find_backend(@args.group)
+          @backend = ::Capistrano::DataPlaneApi.find_backend(T.must(@args.group))
           @servers = servers(@backend)
           start_deployment
 
-          success = nil
-          @servers.each do |server|
+          success = T.let(nil, T.nilable(T::Boolean))
+          @servers&.each do |server|
             server_stats = @deployment_stats[server.name]
             puts COLORS.bold.blue("Deploying the app to `#{server.stage}` -- `#{@backend.name}:#{server.name}`")
 
@@ -58,7 +59,7 @@ module Capistrano
 
         private
 
-        # @return [void]
+        #: -> void
         def start_deployment
           @deployment_stats.tap do |d|
             d.start_time = ::Time.now
@@ -67,25 +68,24 @@ module Capistrano
           end
         end
 
-        # @param success [Boolean]
+        #: (bool?) -> void
         def finish_deployment(success: true)
           @deployment_stats.end_time = ::Time.now
           @deployment_stats.success = success
         end
 
-        # @return [void]
+        #: -> void
         def print_summary
           puts @deployment_stats
         end
 
-        # @param backend [Capistrano::DataPlaneApi::Configuration::Backend]
-        # @return [Array<Capistrano::DataPlaneApi::Configuration::Server>]
+        #: (Configuration::Backend) -> Array[Configuration::Server]?
         def servers(backend)
           return backend.servers unless @args.only?
 
           chosen_servers = []
-          @args.only.each do |current_server_name|
-            backend.servers.each do |server|
+          @args.only&.each do |current_server_name|
+            backend.servers&.each do |server|
               next unless server.name == current_server_name || server.stage == current_server_name
 
               chosen_servers << server

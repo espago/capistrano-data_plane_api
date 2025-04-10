@@ -1,5 +1,5 @@
 inherit_gem:
-  rubocop-espago: rubocop.yml
+  rubocop-espago: sorbet.yml
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2

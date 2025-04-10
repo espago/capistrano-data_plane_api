@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 module Capistrano
@@ -6,8 +7,9 @@ module Capistrano
     # of comparing themselves with other objects of the same class
     # by calling `==` on their instance variables.
     module Equatable
-      # @param other [Object]
-      # @return [Boolean]
+      include Kernel
+
+      #: (Object) -> bool
       def eql?(other)
         return true if equal?(other)
         return false unless other.is_a?(self.class) || is_a?(other.class)

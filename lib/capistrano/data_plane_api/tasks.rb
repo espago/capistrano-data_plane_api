@@ -2,8 +2,8 @@
 
 require 'rake'
 
-namespace :data_plane_api do
-  namespace :server do
+namespace :data_plane_api do # rubocop:disable Metrics/BlockLength
+  namespace :server do # rubocop:disable Metrics/BlockLength
     desc "Set the server's admin state to DRAIN through the HAProxy Data Plane API"
     task :set_drain do
       on roles :web do
@@ -41,7 +41,7 @@ namespace :data_plane_api do
         c = ::Capistrano::DataPlaneApi::COLORS
         server, backend = ::Capistrano::DataPlaneApi.find_server_and_backend(fetch(:stage))
         human_name = c.decorate(" #{backend.name}:#{server.name} ", *backend.styles)
-        puts "Updates HaProxy state for #{human_name}\n"
+        puts "\nUpdates HaProxy state for #{human_name}\n\n"
       end
     end
   end

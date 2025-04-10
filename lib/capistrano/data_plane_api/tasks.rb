@@ -32,5 +32,17 @@ namespace :data_plane_api do
         ::Capistrano::DataPlaneApi.server_set_maint fetch(:stage), force: true
       end
     end
+
+    desc 'Check the state of the HaProxy server'
+    task :check do
+      on roles :web do
+        next if ::Capistrano::DataPlaneApi.no_haproxy?
+
+        c = ::Capistrano::DataPlaneApi::COLORS
+        server, backend = ::Capistrano::DataPlaneApi.find_server_and_backend(fetch(:stage))
+        human_name = c.decorate(" #{backend.name}:#{server.name} ", *backend.styles)
+        puts "Updates HaProxy state for #{human_name}\n"
+      end
+    end
   end
 end

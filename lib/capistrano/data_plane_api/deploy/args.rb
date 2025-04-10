@@ -43,6 +43,16 @@ module Capistrano
             end
 
             parser.on(
+              '-C',
+              '--check',
+              'Test deployment dependencies. ' \
+              'Checks things like directory permissions, necessary utilities, ' \
+              'HaProxy backends and servers'
+            ) do |val|
+              args.check = val
+            end
+
+            parser.on(
               '-g GROUP',
               '--group=GROUP',
               'Deploy the code to every server in the passed HAProxy backend/group'
@@ -171,6 +181,8 @@ module Capistrano
         attr_accessor :rake
         # @return [String, nil] Name of the deployment stage/server
         attr_accessor :stage
+        # @return [Boolean] Checks deployment dependencies
+        attr_accessor :check
 
         alias test? test
 

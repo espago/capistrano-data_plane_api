@@ -259,6 +259,27 @@ module Capistrano
         response
       end
 
+      # @param backend_name [String]
+      # @param server_name [String]
+      # @param config [::DataPlaneApi::Configuration, nil]
+      # @return [Faraday::Response]
+      def get_server_settings(backend_name, server_name, config: nil)
+        haproxy_backend = find_backend(backend_name)
+        conf = ::DataPlaneApi::Configuration.new(
+          basic_user: haproxy_backend.basic_user || @configuration.basic_user,
+          basic_password: haproxy_backend.basic_password || @configuration.basic_password,
+          parent: config,
+          url: configuration.api_url
+        )
+        response = ::DataPlaneApi::Server.get_runtime_settings(backend: backend_name, name: server_name, config: conf)
+        unless response.status.between?(200, 299)
+          raise QueryError,
+                "HAProxy query failed! Couldn't fetch servers' states"
+        end
+
+        response
+      end
+
       private
 
       # @param haproxy_backend [Capistrano::DataPlaneApi::Configuration::Backend]

@@ -3,7 +3,7 @@ PATH
   specs:
     capistrano-data_plane_api (0.1.5)
       booleans (~> 0.1)
-      data_plane_api (~> 0.2)
+      data_plane_api (>= 0.2)
       pastel (< 1)
       shale (>= 1, < 2)
       shale-builder (~> 0.2.4)

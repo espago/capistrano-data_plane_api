@@ -41,8 +41,6 @@ namespace :data_plane_api do # rubocop:disable Metrics/BlockLength
 
         c = ::Capistrano::DataPlaneApi::COLORS
         server, backend = ::Capistrano::DataPlaneApi.find_server_and_backend(fetch(:stage))
-        human_name = c.decorate(" #{backend.name}:#{server.name} ", *backend.styles)
-        puts "\nUpdates HaProxy state for #{human_name}\n\n"
 
         state = ::Capistrano::DataPlaneApi.server_get_state(fetch(:stage))
 
@@ -54,7 +52,8 @@ namespace :data_plane_api do # rubocop:disable Metrics/BlockLength
           operational_state: state['operational_state'],
         )
 
-        puts stats
+        human_name = c.decorate(" #{backend.name}:#{server.name} ", *backend.styles)
+        puts "\nUpdates HaProxy state for #{human_name}\n#{stats}\n\n"
       end
     end
   end

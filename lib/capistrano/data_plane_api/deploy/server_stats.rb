@@ -53,7 +53,7 @@ module Capistrano
             when :pending then 'skipped'
             when :failed  then "failed after #{Helper.humanize_time(T.must(seconds))}"
             when :success then "took #{Helper.humanize_time(T.must(seconds))}"
-            when :info    then "at #{@start_time}"
+            when :info    then "at #{Time.now}"
             end
 
           "  #{state_emoji} #{server_title} #{time_string}#{haproxy_states}"

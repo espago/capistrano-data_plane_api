@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rake'
+require 'capistrano/data_plane_api'
 
 namespace :data_plane_api do # rubocop:disable Metrics/BlockLength
   namespace :server do # rubocop:disable Metrics/BlockLength

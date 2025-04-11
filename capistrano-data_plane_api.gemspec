@@ -31,7 +31,7 @@ require_relative 'lib/capistrano/data_plane_api/version'
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency 'booleans', '~> 0.1'
-  spec.add_dependency 'data_plane_api', '~> 0.2'
+  spec.add_dependency 'data_plane_api', '>= 0.2'
   spec.add_dependency 'pastel', '< 1'
   spec.add_dependency 'shale', '>= 1', '< 2'
   spec.add_dependency 'shale-builder', '~> 0.2.4'

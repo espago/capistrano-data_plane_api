@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require_relative 'helper'
@@ -22,21 +22,23 @@ module Capistrano
         #: Hash[String, Deploy::ServerStats]
         attr_accessor :server_stats
 
-        #: bool
-        attr_accessor :success
+        #: Symbol
+        attr_accessor :state
 
         #: -> void
         def initialize
           @backend = nil
           @start_time = nil
           @end_time = nil
-          @success = true
-          @server_stats = {}
+          @state = T.let(:pending, Symbol)
+          @server_stats = T.let({}, T::Hash[String, Deploy::ServerStats])
+          @seconds = T.let(nil, T.nilable(Integer))
+          @update_states_in_stats = T.let(false, T::Boolean)
         end
 
         #: (String) -> Deploy::ServerStats
         def [](key)
-          @server_stats[key]
+          @server_stats.fetch(key)
         end
 
         #: (String, Deploy::ServerStats) -> void
@@ -58,7 +60,7 @@ module Capistrano
           update_states_in_stats
 
           time_string = COLORS.bold.yellow ::Time.now.to_s
-          if success
+          if state == :success
             state = COLORS.bold.green 'Successful'
             time_sentence = 'took'
           else

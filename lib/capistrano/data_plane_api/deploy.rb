@@ -14,7 +14,7 @@ module Capistrano
           puts COLORS.bold.blue('Running the deployment script')
 
           result = Group.call(args)
-          abort if result == false
+          abort if result == :failed
         end
       end
     end

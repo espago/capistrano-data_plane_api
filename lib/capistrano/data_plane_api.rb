@@ -79,7 +79,7 @@ module Capistrano
       # Set server's admin_state to `drain`.
       #
       # @param force: Change the server's state even when no other server is `up`
-      # @return: Server state after the change, or `false`
+      # @return: Server state after the change, or `nil`
       #   when no change happened
       # @raise [Error] The process failed due to some reason
       #: (String | Symbol, bool, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
@@ -117,7 +117,7 @@ module Capistrano
       # Set server's admin_state to `maint`.
       #
       # @param force: Change the server's state even when no other server is `up`
-      # @return: Server state after the change, or `false` when no change happened
+      # @return: Server state after the change, or `nil` when no change happened
       # @raise [Error] The process failed due to some reason
       #: (String | Symbol, bool, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
       def server_set_maint(deployment_stage, force: false, config: nil)
@@ -153,7 +153,7 @@ module Capistrano
 
       # Set server's admin_state to `ready`
       #
-      # @return: Server state after the change, or `false` when no change happened
+      # @return: Server state after the change, or `nil` when no change happened
       # @raise [Error] The process failed due to some reason
       #: (String | Symbol, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
       def server_set_ready(deployment_stage, config: nil)
@@ -185,6 +185,19 @@ module Capistrano
                 "HAProxy mutation failed! Couldn't set server's `admin_state` to `ready`."
         end
 
+        response.body
+      end
+
+      # Get the state of the server.
+      #
+      # @return: Server state
+      # @raise [Error] The process failed due to some reason
+      #: (String | Symbol, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
+      def server_get_state(deployment_stage, config: nil)
+        haproxy_server, haproxy_backend = find_server_and_backend(deployment_stage)
+
+        # set the target server's state to `drain`
+        response = get_server_settings(T.must(haproxy_backend.name), T.must(haproxy_server.name), config: config)
         response.body
       end
 
@@ -242,7 +255,10 @@ module Capistrano
           parent:         config,
           url:            configuration.api_url,
         )
-        response = ::DataPlaneApi::Server.get_runtime_settings(backend: backend_name.to_s, config: conf)
+        response = ::DataPlaneApi::Server.get_runtime_settings(
+          backend: backend_name.to_s,
+          config:  conf,
+        )
         unless response.status.between?(200, 299)
           raise QueryError,
                 "HAProxy query failed! Couldn't fetch servers' states"
@@ -260,11 +276,14 @@ module Capistrano
           parent:         config,
           url:            configuration.api_url,
         )
-        response = ::DataPlaneApi::Server.get_runtime_settings(backend: backend_name.to_s, name: server_name.to_s,
-                                                               config: conf,)
+        response = ::DataPlaneApi::Server.get_runtime_settings(
+          backend: backend_name.to_s,
+          name:    server_name.to_s,
+          config:  conf,
+        )
         unless response.status.between?(200, 299)
           raise QueryError,
-                "HAProxy query failed! Couldn't fetch servers' states"
+                "HAProxy query failed! Couldn't fetch server's state"
         end
 
         response
@@ -276,8 +295,7 @@ module Capistrano
       def validate_backend_state(haproxy_backend, haproxy_server)
         response = get_backend_servers_settings(T.must(haproxy_backend.name))
 
-        # @type [Array<Hash>]
-        server_statuses = response.body
+        server_statuses = T.let(response.body, T::Array[T::Hash[String, T.untyped]])
         # check if there are any servers other than this one that are `ready` and `up`
         other_servers_ready = server_statuses.any? do |server_status|
           server_status['admin_state'] == 'ready' &&

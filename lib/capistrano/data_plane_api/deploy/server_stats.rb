@@ -9,8 +9,8 @@ module Capistrano
         # `nil` when the deployment hasn't begun
         #  `true` when it has finished successfully, `false` when it has failed
         #
-        #: bool?
-        attr_accessor :success
+        #: Symbol
+        attr_accessor :state
 
         #: Time?
         attr_accessor :start_time
@@ -24,29 +24,36 @@ module Capistrano
         #: String
         attr_accessor :backend_name
 
-        #: String?
+        #: String
         attr_accessor :admin_state
 
-        #: String?
+        #: String
         attr_accessor :operational_state
 
-        #: (String, String) -> void
-        def initialize(server_name, backend_name)
+        #: (String, String, Symbol, String, String) -> void
+        def initialize(
+          server_name,
+          backend_name,
+          state: :pending,
+          admin_state: 'unknown',
+          operational_state: 'unknown'
+        )
           @server_name = server_name
           @backend_name = backend_name
-          @success = nil
+          @state = state
+          @admin_state = admin_state
+          @operational_state = operational_state
           @seconds = nil
-          @admin_state = 'unknown'
-          @operational_state = 'unknown'
         end
 
         #: -> String
         def to_s
           time_string =
-            case @success
-            when nil    then 'skipped'
-            when false  then "failed after #{Helper.humanize_time(T.must(seconds))}"
-            when true   then "took #{Helper.humanize_time(T.must(seconds))}"
+            case @state
+            when :pending then 'skipped'
+            when :failed  then "failed after #{Helper.humanize_time(T.must(seconds))}"
+            when :success then "took #{Helper.humanize_time(T.must(seconds))}"
+            when :info    then "at #{@start_time}"
             end
 
           "  #{state_emoji} #{server_title} #{time_string}#{haproxy_states}"
@@ -82,11 +89,12 @@ module Capistrano
 
         SERVER_TITLE_COLORS = T.let(
           {
-            nil   => :yellow,
-            false => :red,
-            true  => :green,
+            pending: :yellow,
+            failed:  :red,
+            success: :green,
+            info:    :blue,
           }.freeze,
-          T::Hash[T.nilable(T::Boolean), Symbol],
+          T::Hash[Symbol, Symbol],
         )
         private_constant :SERVER_TITLE_COLORS
 
@@ -102,11 +110,12 @@ module Capistrano
 
         STATE_EMOJIS = T.let(
           {
-            nil   => '🟡',
-            false => '❌',
-            true  => '✅',
+            pending: '🟡',
+            failed:  '❌',
+            success: '✅',
+            info:    'ℹ️',
           }.freeze,
-          T::Hash[T.nilable(T::Boolean), String],
+          T::Hash[Symbol, String],
         )
         private_constant :STATE_EMOJIS
 

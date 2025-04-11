@@ -61,9 +61,22 @@ module Capistrano::DataPlaneApi
     end
     def get_server_settings(backend_name, server_name, config: T.unsafe(nil)); end
 
+    # Get the state of the server.
+    #
+    # @return: Server state
+    #
+    # @raise [Error] The process failed due to some reason
+    sig do
+      params(
+        deployment_stage: T.any(::String, ::Symbol),
+        config: T.nilable(::DataPlaneApi::Configuration)
+      ).returns(T.nilable(T::Hash[::String, T.untyped]))
+    end
+    def server_get_state(deployment_stage, config: T.unsafe(nil)); end
+
     # Set server's admin_state to `drain`.
     #
-    # @return: Server state after the change, or `false`
+    # @return: Server state after the change, or `nil`
     #   when no change happened
     #
     # @raise [Error] The process failed due to some reason
@@ -78,7 +91,7 @@ module Capistrano::DataPlaneApi
 
     # Set server's admin_state to `maint`.
     #
-    # @return: Server state after the change, or `false` when no change happened
+    # @return: Server state after the change, or `nil` when no change happened
     #
     # @raise [Error] The process failed due to some reason
     sig do
@@ -92,7 +105,7 @@ module Capistrano::DataPlaneApi
 
     # Set server's admin_state to `ready`
     #
-    # @return: Server state after the change, or `false` when no change happened
+    # @return: Server state after the change, or `nil` when no change happened
     #
     # @raise [Error] The process failed due to some reason
     sig do

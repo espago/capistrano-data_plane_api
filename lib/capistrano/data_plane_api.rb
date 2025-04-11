@@ -295,7 +295,7 @@ module Capistrano
       def validate_backend_state(haproxy_backend, haproxy_server)
         response = get_backend_servers_settings(T.must(haproxy_backend.name))
 
-        server_statuses = T.let(response.body, T::Array[T::Hash[String, T.untyped]])
+        server_statuses = T.let(response.body, T::Array[T::Hash[String, T.untyped]]) # rubocop:disable Sorbet/ForbidTUntyped
         # check if there are any servers other than this one that are `ready` and `up`
         other_servers_ready = server_statuses.any? do |server_status|
           server_status['admin_state'] == 'ready' &&

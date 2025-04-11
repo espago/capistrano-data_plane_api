@@ -73,6 +73,7 @@ This script can be used to deploy this app to remote servers.
 
     -c, --current                    Deploy from the currently checked out branch
     -t, --test                       Show the commands that would be executed but do not carry out the deployment
+    -C, --check                      Test deployment dependencies. Checks things like directory permissions, necessary utilities, HaProxy backends and servers
     -g, --group=GROUP                Deploy the code to every server in the passed HAProxy backend/group
         --no-haproxy                 Do not modify the state of any server in HAProxy
         --force-haproxy              Ignore the current state of servers in HAProxy
@@ -144,6 +145,7 @@ $ bin/deploy -g production -r deploy:restart
 
 There are three new Rake tasks:
 
+- `data_plane_api:server:check` -- check the state of the currently deployed server and log it to stdout
 - `data_plane_api:server:set_drain` -- sets the admin state of the currently deployed server to `DRAIN`
 - `data_plane_api:server:set_maint` -- sets the admin state of the currently deployed server to `MAINT`
 - `data_plane_api:server:set_ready` -- sets the admin state of the currently deployed server to `READY`
@@ -175,6 +177,9 @@ Our config works as follows:
 ```
 deploy
   deploy:starting
+    deploy:check
+      [before]
+        data_plane_api:server:check
   deploy:started
     [after]
         data_plane_api:server:set_drain

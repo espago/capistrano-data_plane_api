@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require 'test_helper'
@@ -5,36 +6,36 @@ require 'test_helper'
 class Capistrano::DataPlaneApiTest < ::TestCase
   def setup
     ::Capistrano::DataPlaneApi.configuration = {
-      api_url: 'http://example.com',
-      basic_user: 'user',
+      api_url:        'http://example.com',
+      basic_user:     'user',
       basic_password: 'pass',
-      backends: [
+      backends:       [
         {
-          name: 'foo_production',
+          name:    'foo_production',
           servers: [
             {
-              name: 'foo_production_1'
+              name: 'foo_production_1',
             },
             {
-              name: 'foo_production_2'
-            }
-          ]
+              name: 'foo_production_2',
+            },
+          ],
         },
         {
-          name: 'foo_staging',
+          name:    'foo_staging',
           servers: [
             {
-              name: 'foo_staging_1'
-            }
-          ]
-        }
-      ]
+              name: 'foo_staging_1',
+            },
+          ],
+        },
+      ],
     }
 
     @api_config = ::DataPlaneApi::Configuration.new(
-      basic_user: ::Capistrano::DataPlaneApi.configuration.basic_user,
+      basic_user:     ::Capistrano::DataPlaneApi.configuration.basic_user,
       basic_password: ::Capistrano::DataPlaneApi.configuration.basic_password,
-      url: ::Capistrano::DataPlaneApi.configuration.api_url
+      url:            ::Capistrano::DataPlaneApi.configuration.api_url,
     )
   end
 
@@ -53,20 +54,20 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
 
-        server_state = ::Capistrano::DataPlaneApi.server_set_drain('foo_production_1')
+        server_state = T.must ::Capistrano::DataPlaneApi.server_set_drain('foo_production_1')
         assert_equal 'drain', server_state['admin_state']
 
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'drain', response.body['admin_state']
@@ -82,8 +83,8 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
@@ -95,8 +96,8 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
@@ -112,20 +113,20 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
 
-        server_state = ::Capistrano::DataPlaneApi.server_set_drain('foo_production_1', force: true)
+        server_state = T.must ::Capistrano::DataPlaneApi.server_set_drain('foo_production_1', force: true)
         assert_equal 'drain', server_state['admin_state']
 
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'drain', response.body['admin_state']
@@ -141,8 +142,8 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
@@ -154,8 +155,8 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
@@ -172,20 +173,20 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
 
-        server_state = ::Capistrano::DataPlaneApi.server_set_maint('foo_production_1')
+        server_state = T.must ::Capistrano::DataPlaneApi.server_set_maint('foo_production_1')
         assert_equal 'maint', server_state['admin_state']
 
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'maint', response.body['admin_state']
@@ -202,20 +203,20 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'drain', response.body['admin_state']
 
-        server_state = ::Capistrano::DataPlaneApi.server_set_ready('foo_production_1')
+        server_state = T.must ::Capistrano::DataPlaneApi.server_set_ready('foo_production_1')
         assert_equal 'ready', server_state['admin_state']
 
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
@@ -241,7 +242,7 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            config: @api_config
+            config:  @api_config,
           )
 
         # confirm that only one server is configured in this HAProxy backend
@@ -254,8 +255,8 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'ready', response.body['admin_state']
@@ -269,7 +270,7 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            config: @api_config
+            config:  @api_config,
           )
 
         # confirm that only one server is configured in this HAProxy backend
@@ -282,8 +283,8 @@ class Capistrano::DataPlaneApiTest < ::TestCase
         response =
           ::DataPlaneApi::Server.get_runtime_settings(
             backend: backend.name,
-            name: server.name,
-            config: @api_config
+            name:    server.name,
+            config:  @api_config,
           )
 
         assert_equal 'drain', response.body['admin_state']

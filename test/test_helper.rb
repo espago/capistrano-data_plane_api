@@ -6,6 +6,7 @@ require 'capistrano/data_plane_api'
 require 'minitest/autorun'
 require 'shoulda-context'
 
+require 'byebug'
 require 'vcr'
 
 ::RELATIVE_CASSETTE_DIR = 'test/cassettes'

@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require 'yaml'
@@ -8,7 +9,7 @@ require 'shale'
 
 require_relative 'type'
 
-::Dir[::File.expand_path('configuration/*.rb', __dir__)].sort.each { require _1 }
+::Dir[::File.expand_path('configuration/*.rb', __dir__)].each { require _1 }
 
 module Capistrano
   module DataPlaneApi
@@ -22,8 +23,7 @@ module Capistrano
       attribute :basic_password, ::Shale::Type::String
 
       class << self
-        # @param path [String]
-        # @return [self]
+        #: (String) -> instance
         def from_file(path)
           from_yaml ::ERB.new(::File.read(path)).result
         end

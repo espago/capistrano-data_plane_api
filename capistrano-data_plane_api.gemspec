@@ -12,7 +12,7 @@ require_relative 'lib/capistrano/data_plane_api/version'
   spec.description = 'Capistrano plugin which helps you automatically change the admin state of your HAProxy servers'
   spec.homepage = 'https://github.com/espago/capistrano-data_plane_api'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.7.0'
+  spec.required_ruby_version = '>= 3.2.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/espago/capistrano-data_plane_api'
@@ -30,9 +30,12 @@ require_relative 'lib/capistrano/data_plane_api/version'
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency 'data_plane_api', '~> 0.1'
+  spec.add_dependency 'booleans', '~> 0.1'
+  spec.add_dependency 'data_plane_api', '>= 0.2'
   spec.add_dependency 'pastel', '< 1'
   spec.add_dependency 'shale', '>= 1', '< 2'
+  spec.add_dependency 'shale-builder', '~> 0.2.4'
+  spec.add_dependency 'sorbet-runtime', '~> 0.5'
   spec.add_dependency 'thor', '> 1', '< 2'
   spec.add_dependency 'tty-box', '< 1'
   spec.add_dependency 'tty-cursor', '< 1'

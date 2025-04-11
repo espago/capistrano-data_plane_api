@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Capistrano
@@ -43,7 +43,7 @@ module Capistrano
           @state = state
           @admin_state = admin_state
           @operational_state = operational_state
-          @seconds = nil
+          @seconds = T.let(nil, T.nilable(Integer))
         end
 
         #: -> String
@@ -100,7 +100,7 @@ module Capistrano
 
         #: -> String
         def server_title
-          COLORS.decorate(server_id, :bold, SERVER_TITLE_COLORS.fetch(@success))
+          COLORS.decorate(server_id, :bold, SERVER_TITLE_COLORS.fetch(@state))
         end
 
         #: -> String
@@ -121,7 +121,7 @@ module Capistrano
 
         #: -> String
         def state_emoji
-          STATE_EMOJIS.fetch(@success)
+          STATE_EMOJIS.fetch(@state)
         end
       end
     end

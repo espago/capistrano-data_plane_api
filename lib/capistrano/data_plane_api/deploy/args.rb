@@ -11,7 +11,7 @@ module Capistrano
       # passed to the deployment script and saves them in
       # an object.
       class Args
-        PRINTABLE_ENV_VARS = %w[BRANCH NO_MIGRATIONS].freeze
+        PRINTABLE_ENV_VARS = %w[BRANCH NO_MIGRATIONS NO_ASSET_PRECOMPILATION].freeze
 
         #: (Array[untyped]?) -> instance
         def self.parse(options = nil) # rubocop:disable Metrics/MethodLength, Style/ClassMethodsDefinitions
@@ -155,6 +155,13 @@ module Capistrano
             ) do |val|
               args.no_migrations = val
               ::ENV['NO_MIGRATIONS'] = 'true'
+            end
+
+            parser.on(
+              '--no-asset-precompilation',
+              'Skip asset precompilation during deployment',
+            ) do
+              ::ENV['NO_ASSET_PRECOMPILATION'] = 'true'
             end
           end
 

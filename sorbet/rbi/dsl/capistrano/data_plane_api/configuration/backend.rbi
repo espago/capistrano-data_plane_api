@@ -10,6 +10,12 @@ class Capistrano::DataPlaneApi::Configuration::Backend
 
   module ShaleAttributeMethods
     sig { returns(T.nilable(String)) }
+    def api_url; end
+
+    sig { params(value: T.nilable(String)).returns(T.nilable(String)) }
+    def api_url=(value); end
+
+    sig { returns(T.nilable(String)) }
     def basic_password; end
 
     sig { params(value: T.nilable(String)).returns(T.nilable(String)) }

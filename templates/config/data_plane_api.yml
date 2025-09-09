@@ -44,6 +44,7 @@ backends:
     styles:
       - :bold
       - :on_green
+    api_url: http://example.com/other-haproxy-data-plane-api
     # You can use ERB to read data from Environment Variables.
     basic_user: <%= ENV['USER'] %>
     basic_password: <%= ENV['PASS'] %>

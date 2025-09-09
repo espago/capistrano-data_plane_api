@@ -85,6 +85,7 @@ This script can be used to deploy this app to remote servers.
     -h, --help                       Prints this help
     -b, --branch=BRANCH              Deploy the code from the passed Git branch
         --no-migrations              Do not carry out migrations
+        --no-asset-precompilation    Skip asset precompilation during deployment
 ```
 
 ### Example of commands
@@ -196,6 +197,15 @@ deploy
 ```
 
 These tasks will only run when the `:web` role is added to the deployment stage.
+
+## Database migrations and asset precompilation
+
+In order for the `--no-migrations` and `--no-asset-precompilation` flags to work correctly, you need to use this configuration in your `Capfile`:
+
+```rb
+require 'capistrano/rails/assets' if ::ENV['NO_ASSET_PRECOMPILATION'].nil?
+require 'capistrano/rails/migrations' if ::ENV['NO_MIGRATIONS'].nil?
+```
 
 ## Development
 

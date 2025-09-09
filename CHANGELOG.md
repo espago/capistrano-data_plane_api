@@ -3,6 +3,7 @@
 ## [0.3.0] - 09.09.2025
 
 - Add `api_url` per HAProxy backend
+- Add `--no-asset-precompilation` CLI flag
 
 ## [0.2.0] - 11.04.2025
 

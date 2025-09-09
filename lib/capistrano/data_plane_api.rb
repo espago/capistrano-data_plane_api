@@ -91,10 +91,10 @@ module Capistrano
         validate_backend_state(haproxy_backend, haproxy_server) unless force
 
         conf = ::DataPlaneApi::Configuration.new(
-          basic_user:     haproxy_backend.basic_user || @configuration.basic_user,
-          basic_password: haproxy_backend.basic_password || @configuration.basic_password,
+          basic_user:     haproxy_backend.basic_user || configuration.basic_user,
+          basic_password: haproxy_backend.basic_password || configuration.basic_password,
+          url:            haproxy_backend.api_url || configuration.api_url,
           parent:         config,
-          url:            configuration.api_url,
         )
 
         # set the target server's state to `drain`
@@ -128,10 +128,10 @@ module Capistrano
         validate_backend_state(haproxy_backend, haproxy_server) unless force
 
         conf = ::DataPlaneApi::Configuration.new(
-          basic_user:     haproxy_backend.basic_user || @configuration.basic_user,
-          basic_password: haproxy_backend.basic_password || @configuration.basic_password,
+          basic_user:     haproxy_backend.basic_user || configuration.basic_user,
+          basic_password: haproxy_backend.basic_password || configuration.basic_password,
+          url:            haproxy_backend.api_url || configuration.api_url,
           parent:         config,
-          url:            configuration.api_url,
         )
 
         # set the target server's state to `maint`
@@ -162,10 +162,10 @@ module Capistrano
         return if servers.length < 2 # skip HAProxy if there is only a single server
 
         conf = ::DataPlaneApi::Configuration.new(
-          basic_user:     haproxy_backend.basic_user || @configuration.basic_user,
-          basic_password: haproxy_backend.basic_password || @configuration.basic_password,
+          basic_user:     haproxy_backend.basic_user || configuration.basic_user,
+          basic_password: haproxy_backend.basic_password || configuration.basic_password,
+          url:            haproxy_backend.api_url || configuration.api_url,
           parent:         config,
-          url:            configuration.api_url,
         )
 
         # set the target server's state to `drain`
@@ -250,10 +250,10 @@ module Capistrano
       def get_backend_servers_settings(backend_name, config: nil)
         haproxy_backend = find_backend(backend_name)
         conf = ::DataPlaneApi::Configuration.new(
-          basic_user:     haproxy_backend.basic_user || @configuration.basic_user,
-          basic_password: haproxy_backend.basic_password || @configuration.basic_password,
+          basic_user:     haproxy_backend.basic_user || configuration.basic_user,
+          basic_password: haproxy_backend.basic_password || configuration.basic_password,
+          url:            haproxy_backend.api_url || configuration.api_url,
           parent:         config,
-          url:            configuration.api_url,
         )
         response = ::DataPlaneApi::Server.get_runtime_settings(
           backend: backend_name.to_s,
@@ -271,10 +271,10 @@ module Capistrano
       def get_server_settings(backend_name, server_name, config: nil)
         haproxy_backend = find_backend(backend_name)
         conf = ::DataPlaneApi::Configuration.new(
-          basic_user:     haproxy_backend.basic_user || @configuration.basic_user,
-          basic_password: haproxy_backend.basic_password || @configuration.basic_password,
+          basic_user:     haproxy_backend.basic_user || configuration.basic_user,
+          basic_password: haproxy_backend.basic_password || configuration.basic_password,
+          url:            haproxy_backend.api_url || configuration.api_url,
           parent:         config,
-          url:            configuration.api_url,
         )
         response = ::DataPlaneApi::Server.get_runtime_settings(
           backend: backend_name.to_s,

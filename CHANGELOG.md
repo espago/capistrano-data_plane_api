@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.1] - 15.10.2025
+
+- Update `shale-builder`
+
 ## [0.3.0] - 09.09.2025
 
 - Add `api_url` per HAProxy backend

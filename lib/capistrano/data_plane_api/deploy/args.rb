@@ -13,7 +13,7 @@ module Capistrano
       class Args
         PRINTABLE_ENV_VARS = %w[BRANCH NO_MIGRATIONS NO_ASSET_PRECOMPILATION].freeze
 
-        #: (Array[untyped]?) -> instance
+        #: (?Array[untyped]?) -> instance
         def self.parse(options = nil) # rubocop:disable Metrics/MethodLength, Style/ClassMethodsDefinitions
           args = new
 
@@ -237,13 +237,13 @@ module Capistrano
           @group = backend.name
         end
 
-        #: (String | Symbol | nil) -> String
+        #: (?String | Symbol | nil) -> String
         def deploy_command(stage = nil)
           used_stage = stage || self.stage
           "cap #{used_stage} #{rake}"
         end
 
-        #: (String | Symbol | nil) -> String
+        #: (?String | Symbol | nil) -> String
         def humanized_deploy_command(stage = nil)
           result = ::String.new
           PRINTABLE_ENV_VARS.each do |env_var_name|

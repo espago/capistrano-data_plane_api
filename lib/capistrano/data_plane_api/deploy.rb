@@ -13,14 +13,14 @@ module Capistrano
         #
         #: -> void
         def call
-          result = call!
-          abort if result == :failed
+          stats = call!
+          abort if stats.state == :failed
         end
 
         # Returns when the deployment is over.
         # Returns the final state of the deployment as a symbol `:failed`, `:pending` or `:success`
         #
-        #: -> Symbol
+        #: -> DeploymentStats
         def call!
           args = Args.parse
           puts COLORS.bold.blue('Running the deployment script')

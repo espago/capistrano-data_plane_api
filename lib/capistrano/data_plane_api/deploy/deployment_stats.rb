@@ -30,10 +30,10 @@ module Capistrano
           @backend = nil
           @start_time = nil
           @end_time = nil
-          @state = T.let(:pending, Symbol)
-          @server_stats = T.let({}, T::Hash[String, Deploy::ServerStats])
-          @seconds = T.let(nil, T.nilable(Integer))
-          @update_states_in_stats = T.let(false, T::Boolean)
+          @state = :pending #: Symbol
+          @server_stats = {} #: Hash[String, Deploy::ServerStats]
+          @seconds = nil #: Integer?
+          @update_states_in_stats = false #: bool
         end
 
         #: (String) -> Deploy::ServerStats

@@ -5,25 +5,19 @@ module Capistrano
   module DataPlaneApi
     # Provides helper methods
     module Helper
-      ADMIN_STATE_COLORS = T.let(
-        {
-          'unknown' => :on_red,
-          'drain'   => :on_blue,
-          'ready'   => :on_green,
-          'maint'   => :on_yellow,
-        }.freeze,
-        T::Hash[String, Symbol],
-      )
+      ADMIN_STATE_COLORS = {
+        'unknown' => :on_red,
+        'drain'   => :on_blue,
+        'ready'   => :on_green,
+        'maint'   => :on_yellow,
+      }.freeze #: Hash[String, Symbol]
 
-      OPERATIONAL_STATE_COLORS = T.let(
-        {
-          'unknown'  => :on_red,
-          'up'       => :on_green,
-          'down'     => :on_red,
-          'stopping' => :on_yellow,
-        }.freeze,
-        T::Hash[String, Symbol],
-      )
+      OPERATIONAL_STATE_COLORS = {
+        'unknown'  => :on_red,
+        'up'       => :on_green,
+        'down'     => :on_red,
+        'stopping' => :on_yellow,
+      }.freeze #: Hash[String, Symbol]
 
       #: -> bool
       def no_haproxy?

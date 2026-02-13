@@ -39,7 +39,7 @@ module Capistrano
         # Calculate how many seconds have passed
         # since the given point in time.
         #
-        #: (Time, Time) -> Integer
+        #: (Time, ?to: Time) -> Integer
         def seconds_since(time, to: ::Time.now)
           (to - time).to_i
         end

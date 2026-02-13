@@ -8,28 +8,41 @@ module Capistrano
       # in a particular HAProxy backend/group.
       class Group
         class << self
-          #: (Args) -> Symbol
+          #: (Args) -> DeploymentStats
           def call(args)
             new(args).call
           end
         end
 
+        #: Configuration::Backend?
+        attr_reader :backend
+
+        #: Array[Configuration::Server]?
+        attr_reader :servers
+
+        #: DeploymentStats
+        attr_reader :deployment_stats
+
+        #: Symbol
+        attr_reader :state
+
         #: (Args) -> void
         def initialize(args)
           @args = args
-          @deployment_stats = T.let(DeploymentStats.new, DeploymentStats)
-          @backend = T.let(nil, T.nilable(Configuration::Backend))
-          @servers = T.let(nil, T.nilable(T::Array[Configuration::Server]))
+          @deployment_stats = DeploymentStats.new #: DeploymentStats
+          @backend = nil #: Configuration::Backend?
+          @servers = nil #: Array[Configuration::Server]?
+          @state = :pending #: Symbol
         end
 
-        # Whether the deployment has been successful
-        #: -> Symbol
+        # Carries out the deployment and returns the stats
+        #
+        #: -> DeploymentStats
         def call
           @backend = ::Capistrano::DataPlaneApi.find_backend(T.must(@args.group))
-          @servers = servers(@backend)
+          @servers = get_servers(@backend)
           start_deployment
 
-          state = :pending
           @servers&.each do |server|
             server_stats = @deployment_stats[T.must(server.name)]
             puts COLORS.bold.blue("Deploying the app to `#{server.stage}` -- `#{@backend.name}:#{server.name}`")
@@ -43,27 +56,27 @@ module Capistrano
             deploy_command = @args.deploy_command(server.stage)
             case system deploy_command
             when true
-              state = :success
+              @state = :success
             when false
-              state = :failed
+              @state = :failed
             when nil
-              state = :pending
+              @state = :pending
             end
 
             server_stats.end_time = ::Time.now
-            server_stats.state = state
+            server_stats.state = @state
 
-            next if state == :success
+            next if @state == :success
 
             puts COLORS.bold.red("Command `#{deploy_command}` failed")
             break
           end
 
-          return :pending if @args.test?
+          return @deployment_stats if @args.test?
 
-          finish_deployment(state: state)
+          finish_deployment(state: @state)
           print_summary
-          state
+          @deployment_stats
         end
 
         private
@@ -77,7 +90,7 @@ module Capistrano
           end
         end
 
-        #: (Symbol) -> void
+        #: (?state: Symbol) -> void
         def finish_deployment(state: :success)
           @deployment_stats.end_time = ::Time.now
           @deployment_stats.state = state
@@ -89,7 +102,7 @@ module Capistrano
         end
 
         #: (Configuration::Backend) -> Array[Configuration::Server]?
-        def servers(backend)
+        def get_servers(backend)
           return backend.servers unless @args.only?
 
           chosen_servers = []

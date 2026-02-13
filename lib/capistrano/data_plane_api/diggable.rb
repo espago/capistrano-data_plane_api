@@ -14,7 +14,7 @@ module Capistrano
       # This implementation of `dig` uses `public_send` under the hood.
       #
       # @raise [TypeError] value has no #dig method
-      #: (untyped) -> untyped
+      #: (*untyped) -> untyped
       def dig(*args)
         return unless args.size.positive?
 

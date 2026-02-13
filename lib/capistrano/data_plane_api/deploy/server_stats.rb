@@ -30,7 +30,7 @@ module Capistrano
         #: String
         attr_accessor :operational_state
 
-        #: (String, String, Symbol, String, String) -> void
+        #: (String, String, ?state: Symbol, ?admin_state: String, ?operational_state: String) -> void
         def initialize(
           server_name,
           backend_name,
@@ -43,7 +43,7 @@ module Capistrano
           @state = state
           @admin_state = admin_state
           @operational_state = operational_state
-          @seconds = T.let(nil, T.nilable(Integer))
+          @seconds = nil #: Integer?
         end
 
         #: -> String
@@ -87,15 +87,12 @@ module Capistrano
           HAPROXY
         end
 
-        SERVER_TITLE_COLORS = T.let(
-          {
-            pending: :yellow,
-            failed:  :red,
-            success: :green,
-            info:    :blue,
-          }.freeze,
-          T::Hash[Symbol, Symbol],
-        )
+        SERVER_TITLE_COLORS = {
+          pending: :yellow,
+          failed:  :red,
+          success: :green,
+          info:    :blue,
+        }.freeze #: Hash[Symbol, Symbol]
         private_constant :SERVER_TITLE_COLORS
 
         #: -> String
@@ -108,15 +105,12 @@ module Capistrano
           "#{@backend_name}:#{@server_name}"
         end
 
-        STATE_EMOJIS = T.let(
-          {
-            pending: '🟡',
-            failed:  '❌',
-            success: '✅',
-            info:    'ℹ️',
-          }.freeze,
-          T::Hash[Symbol, String],
-        )
+        STATE_EMOJIS = {
+          pending: '🟡',
+          failed:  '❌',
+          success: '✅',
+          info:    'ℹ️',
+        }.freeze #: Hash[Symbol, String]
         private_constant :STATE_EMOJIS
 
         #: -> String

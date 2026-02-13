@@ -15,7 +15,7 @@ module Capistrano
         # before another frame is printed.
         #
         # @param interval: Number of seconds between each screen refresh
-        #: (Integer) { (String) -> Object } -> void
+        #: (?interval: Integer) { (String) -> Object } -> void
         def call(interval: 2, &_block)
           previous_line_count = 0
           previous_max_line_length = 0

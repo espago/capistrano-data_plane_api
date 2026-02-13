@@ -82,7 +82,7 @@ module Capistrano
       # @return: Server state after the change, or `nil`
       #   when no change happened
       # @raise [Error] The process failed due to some reason
-      #: (String | Symbol, bool, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
+      #: (String | Symbol, ?force: bool, ?config: ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
       def server_set_drain(deployment_stage, force: false, config: nil)
         haproxy_server, haproxy_backend = find_server_and_backend(deployment_stage)
         servers = T.must haproxy_backend.servers
@@ -119,7 +119,7 @@ module Capistrano
       # @param force: Change the server's state even when no other server is `up`
       # @return: Server state after the change, or `nil` when no change happened
       # @raise [Error] The process failed due to some reason
-      #: (String | Symbol, bool, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
+      #: (String | Symbol, ?force: bool, ?config: ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
       def server_set_maint(deployment_stage, force: false, config: nil)
         haproxy_server, haproxy_backend = find_server_and_backend(deployment_stage)
         servers = T.must haproxy_backend.servers
@@ -155,7 +155,7 @@ module Capistrano
       #
       # @return: Server state after the change, or `nil` when no change happened
       # @raise [Error] The process failed due to some reason
-      #: (String | Symbol, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
+      #: (String | Symbol, ?config: ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
       def server_set_ready(deployment_stage, config: nil)
         haproxy_server, haproxy_backend = find_server_and_backend(deployment_stage)
         servers = T.must haproxy_backend.servers
@@ -192,7 +192,7 @@ module Capistrano
       #
       # @return: Server state
       # @raise [Error] The process failed due to some reason
-      #: (String | Symbol, ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
+      #: (String | Symbol, ?config: ::DataPlaneApi::Configuration?) -> Hash[String, untyped]?
       def server_get_state(deployment_stage, config: nil)
         haproxy_server, haproxy_backend = find_server_and_backend(deployment_stage)
 
@@ -246,7 +246,7 @@ module Capistrano
         [T.must(haproxy_server), haproxy_backend]
       end
 
-      #: (Symbol | String, ::DataPlaneApi::Configuration?) -> Faraday::Response
+      #: (Symbol | String, ?config: ::DataPlaneApi::Configuration?) -> Faraday::Response
       def get_backend_servers_settings(backend_name, config: nil)
         haproxy_backend = find_backend(backend_name)
         conf = ::DataPlaneApi::Configuration.new(
@@ -267,7 +267,7 @@ module Capistrano
         response
       end
 
-      #: (Symbol | String, Symbol | String, ::DataPlaneApi::Configuration?) -> Faraday::Response
+      #: (Symbol | String, Symbol | String, ?config: ::DataPlaneApi::Configuration?) -> Faraday::Response
       def get_server_settings(backend_name, server_name, config: nil)
         haproxy_backend = find_backend(backend_name)
         conf = ::DataPlaneApi::Configuration.new(

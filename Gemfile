@@ -12,7 +12,7 @@ gem 'rubocop', '~> 1.21' # Ruby linter
 gem 'rubocop-espago', '~> 1.0' # Custom Ruby linter config
 gem 'rubocop-sorbet', '~> 0.10.0' # Rubocop config for sorbet
 gem 'shoulda-context', '~> 2.0' # Testing utilities
-gem 'sorbet', '~> 0.5' # static typechecker
-gem 'tapioca', '~> 0.16.11', require: false # RBI generator
+gem 'sorbet', '~> 0.6.12940' # static typechecker
+gem 'tapioca', '~> 0.17.10', require: false # RBI generator
 gem 'vcr', '~> 6.3.1' # Save HTTP interactions to files during tests
 gem 'webmock', '~> 3.25.1' # Mock network interactions

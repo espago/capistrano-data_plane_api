@@ -15,8 +15,13 @@ class Capistrano::DataPlaneApi::Configuration
     sig { params(value: T.nilable(String)).returns(T.nilable(String)) }
     def api_url=(value); end
 
-    sig { returns(T.nilable(T::Array[Capistrano::DataPlaneApi::Configuration::Backend])) }
-    def backends; end
+    sig { params(block: NilClass).returns(T.nilable(T::Array[Capistrano::DataPlaneApi::Configuration::Backend])) }
+    sig do
+      params(
+        block: T.proc.params(arg0: Capistrano::DataPlaneApi::Configuration::Backend).void
+      ).returns(Capistrano::DataPlaneApi::Configuration::Backend)
+    end
+    def backends(&block); end
 
     sig do
       params(

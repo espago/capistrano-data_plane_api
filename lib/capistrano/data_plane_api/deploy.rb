@@ -8,13 +8,24 @@ module Capistrano
     # Contains code used in the deployment script.
     module Deploy
       class << self
+        # Returns when the deployment is over.
+        # Aborts the program (exits with code 1) when the deployment has failed.
+        #
         #: -> void
         def call
+          result = call!
+          abort if result == :failed
+        end
+
+        # Returns when the deployment is over.
+        # Returns the final state of the deployment as a symbol `:failed`, `:pending` or `:success`
+        #
+        #: -> Symbol
+        def call!
           args = Args.parse
           puts COLORS.bold.blue('Running the deployment script')
 
-          result = Group.call(args)
-          abort if result == :failed
+          Group.call(args)
         end
       end
     end

@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.0] - 13.02.2026
+
+- Add `Capistrano::DataPlaneApi::Deploy::call!` method that returns the result of the deployment
+
 ## [0.3.1] - 15.10.2025
 
 - Update `shale-builder`

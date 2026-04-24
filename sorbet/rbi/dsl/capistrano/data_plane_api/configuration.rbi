@@ -53,5 +53,13 @@ class Capistrano::DataPlaneApi::Configuration
 
     sig { params(value: T.nilable(Integer)).returns(T.nilable(Integer)) }
     def logger_level=(value); end
+
+    # Version of `backends` that memoizes the previous object if it was already present.
+    sig do
+      params(
+        block: T.proc.params(arg0: Capistrano::DataPlaneApi::Configuration::Backend).void
+      ).returns(Capistrano::DataPlaneApi::Configuration::Backend)
+    end
+    def memo_backends(&block); end
   end
 end

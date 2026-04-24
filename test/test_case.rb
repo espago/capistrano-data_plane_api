@@ -45,7 +45,7 @@ class TestCase < ::Minitest::Test
   # Wraps around `VCR.use_cassette` with an automatically generated cassette name using the `cassette_name` method
   #
   # @param options: options which will be passed to `VCR.use_cassette`
-  #: [R] (Hash[Symbol, untyped]) { -> R } -> R
+  #: [R] (?Hash[Symbol, untyped]) { -> R } -> R
   def http_cassette(options = {}, &)
     ::VCR.use_cassette(cassette_name, options, &)
   end

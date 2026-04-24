@@ -111,7 +111,7 @@ module Shale::Builder
   # that have been assigned.
   #
   #
-  # source://shale-builder//lib/shale/builder.rb#211
+  # source://shale-builder//lib/shale/builder.rb#217
   sig { returns(T::Array[::Shale::Builder::Value]) }
   def attribute_values; end
 
@@ -120,7 +120,7 @@ module Shale::Builder
   # Attributes that aren't defined are ignored.
   #
   #
-  # source://shale-builder//lib/shale/builder.rb#223
+  # source://shale-builder//lib/shale/builder.rb#229
   sig { params(context: T.untyped).void }
   def inject_context(**context); end
 
@@ -154,7 +154,7 @@ module Shale::Builder::ClassMethods
 
   # Create an alias for the getter and setter of an attribute.
   #
-  # source://shale-builder//lib/shale/builder.rb#153
+  # source://shale-builder//lib/shale/builder.rb#159
   sig { params(new_name: ::Symbol, old_name: ::Symbol).void }
   def alias_attribute(new_name, old_name); end
 
@@ -190,7 +190,7 @@ module Shale::Builder::ClassMethods
   # The result gets memoized.
   #
   #
-  # source://shale-builder//lib/shale/builder.rb#190
+  # source://shale-builder//lib/shale/builder.rb#196
   sig { returns(T::Hash[::Symbol, ::Shale::Attribute]) }
   def builder_attributes; end
 
@@ -198,7 +198,7 @@ module Shale::Builder::ClassMethods
   # Always constructs a new hash.
   #
   #
-  # source://shale-builder//lib/shale/builder.rb#198
+  # source://shale-builder//lib/shale/builder.rb#204
   sig { returns(T::Hash[::Symbol, ::Shale::Attribute]) }
   def builder_attributes!; end
 
@@ -217,7 +217,7 @@ module Shale::Builder::ClassMethods
   # The result gets memoized.
   #
   #
-  # source://shale-builder//lib/shale/builder.rb#172
+  # source://shale-builder//lib/shale/builder.rb#178
   sig { returns(T::Hash[::Symbol, ::Shale::Attribute]) }
   def mapper_attributes; end
 
@@ -225,7 +225,7 @@ module Shale::Builder::ClassMethods
   # Always constructs a new hash.
   #
   #
-  # source://shale-builder//lib/shale/builder.rb#180
+  # source://shale-builder//lib/shale/builder.rb#186
   sig { returns(T::Hash[::Symbol, ::Shale::Attribute]) }
   def mapper_attributes!; end
 

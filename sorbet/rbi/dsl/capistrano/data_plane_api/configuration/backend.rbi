@@ -27,6 +27,14 @@ class Capistrano::DataPlaneApi::Configuration::Backend
     sig { params(value: T.nilable(String)).returns(T.nilable(String)) }
     def basic_user=(value); end
 
+    # Version of `servers` that memoizes the previous object if it was already present.
+    sig do
+      params(
+        block: T.proc.params(arg0: Capistrano::DataPlaneApi::Configuration::Server).void
+      ).returns(Capistrano::DataPlaneApi::Configuration::Server)
+    end
+    def memo_servers(&block); end
+
     sig { returns(T.nilable(String)) }
     def name; end
 

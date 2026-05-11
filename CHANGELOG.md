@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.6.0] - 11.05.2026
+
+- Expose CLI arguments through `DeploymentStats#args`
+
 ## [0.5.0] - 24.04.2026
 
 - Update `shale-builder`

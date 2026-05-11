@@ -266,8 +266,6 @@ module Capistrano
           public_send("#{key}=", val)
         end
 
-        private
-
         #: -> bool
         def one_server?
           Boolean(@stage && @group.nil?)

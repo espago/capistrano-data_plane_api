@@ -29,7 +29,7 @@ module Capistrano
         #: (Args) -> void
         def initialize(args)
           @args = args
-          @deployment_stats = DeploymentStats.new #: DeploymentStats
+          @deployment_stats = DeploymentStats.new(args) #: DeploymentStats
           @backend = nil #: Configuration::Backend?
           @servers = nil #: Array[Configuration::Server]?
           @state = :pending #: Symbol

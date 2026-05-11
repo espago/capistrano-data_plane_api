@@ -13,6 +13,9 @@ module Capistrano
         #: Capistrano::DataPlaneApi::Configuration::Backend?
         attr_accessor :backend
 
+        #: Args
+        attr_accessor :args
+
         #: Time?
         attr_accessor :start_time
 
@@ -25,8 +28,9 @@ module Capistrano
         #: Symbol
         attr_accessor :state
 
-        #: -> void
-        def initialize
+        #: (Args) -> void
+        def initialize(args)
+          @args = args
           @backend = nil
           @start_time = nil
           @end_time = nil
